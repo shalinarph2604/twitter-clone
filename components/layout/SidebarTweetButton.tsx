@@ -4,6 +4,7 @@ import useLoginModal from "@/hooks/useLoginModal"
 
 const SidebarTweetButton = () => {
 
+    // if user haven't login, the tweetButton will direct user to login first
     const loginModal = useLoginModal();
 
     const onClick = useCallback(() => {
