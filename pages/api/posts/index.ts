@@ -13,7 +13,7 @@ export default async function handler(
 
     try {
         if (req.method === 'POST') {
-            const { currentUser } = await serverAuth(req)
+            const { currentUser } = await serverAuth(req, res)
             const { body } = req.body
 
             const post = await prisma.post.create({

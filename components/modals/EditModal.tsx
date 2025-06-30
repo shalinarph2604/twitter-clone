@@ -34,7 +34,7 @@ const EditModal = () => {
         try {
             setIsLoading(true);
 
-            await axios.patch('api/edit', {
+            await axios.patch('/api/edit', {         // ini yang bikin gabisa ubah profile (404)
                 name,
                 username,
                 bio,
@@ -46,6 +46,7 @@ const EditModal = () => {
             toast.success('Profile updated successfully');
             editModal.onClose();
         } catch (error) {
+            console.log(error)
             toast.error('Something went wrong');
         } finally {
             setIsLoading(false);

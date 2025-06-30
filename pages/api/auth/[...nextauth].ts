@@ -5,7 +5,7 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 
 import prisma from '@/libs/prismadb';
 
-export default NextAuth({
+export const authOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
@@ -41,10 +41,12 @@ export default NextAuth({
   ],
   debug: process.env.NODE_ENV === 'development',
   session: {
-    strategy: 'jwt',
+    strategy: 'jwt' as const,
   },
   jwt: {
     secret: process.env.NEXTAUTH_JWT_SECRET,
   },
   secret: process.env.NEXTAUTH_SECRET,
-});
+};
+
+export default NextAuth(authOptions);

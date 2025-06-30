@@ -34,7 +34,7 @@ const Modal: React.FC<ModalProps> = ({
         if (disabled) {
             return;
         }
-        onSubmit();
+        onSubmit();             // ini yang bikin gabisa ubah profile (404)
     }, [disabled, onSubmit])
 
     if (!isOpen) {
