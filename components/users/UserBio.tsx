@@ -1,4 +1,5 @@
 import Button from "../Button";
+
 import useCurrentUser from "@/hooks/useCurrentUser";
 import useUser from "@/hooks/useUser";
 import useEditModal from "@/hooks/useEditModal";
@@ -6,6 +7,7 @@ import useFollow from "@/hooks/useFollow";
 
 import { format } from "date-fns";
 import { useMemo } from "react";
+import { useRouter } from "next/router"
 import { BiCalendar } from "react-icons/bi";
 
 
@@ -14,6 +16,8 @@ interface UserBioProps {
 }
 
 const UserBio: React.FC<UserBioProps> = ({ userId }) => {
+    const router = useRouter()
+    
     const { data: currentUser } = useCurrentUser();
     const { data: fetchedUser } = useUser(userId);
 
@@ -61,14 +65,15 @@ const UserBio: React.FC<UserBioProps> = ({ userId }) => {
                     </div>
                     <div className="flex flex-row items-center gap-6 mt-4">
                         <div className="flex flex-row items-center gap-1">
-                            <p className="text-white">
+                            <p className="text-white"> 
                                 {fetchedUser?.followingIds?.length}
                             </p>
                             <p className="text-neutral-500">Following</p>
                         </div>
-                    </div>
-                    <div className="flex flex-row items-center gap-6 mt-4">
-                        <div className="flex flex-row items-center gap-1">
+                        <div
+                            onClick={() => router.push(`/users/${userId}/followers`)}
+                            className="flex flex-row items-center gap-1 cursor-pointer"
+                        >
                             <p className="text-white">
                                 {fetchedUser?.followersCount || 0}
                             </p>

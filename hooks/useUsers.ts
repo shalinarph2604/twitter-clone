@@ -2,7 +2,7 @@ import useSWR from "swr";
 
 import fetcher from "@/libs/fetcher";
 
-export interface User {
+export interface Users {
     id: string;
     name: string;
     username: string;
@@ -14,7 +14,7 @@ const useUsers = () => {
         error,
         isLoading,
         mutate
-    } = useSWR<User[]>('/api/users', fetcher);
+    } = useSWR<Users[]>('/api/users', fetcher);
 
     return {
         data,

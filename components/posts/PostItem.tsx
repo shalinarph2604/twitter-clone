@@ -2,6 +2,7 @@
 import useLoginModal from "@/hooks/useLoginModal";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import useLike from "@/hooks/useLike";
+
 import Avatar from "../Avatar";
 
 import { useRouter } from "next/router";
