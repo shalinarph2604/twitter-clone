@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 
 import useFollowers from '@/hooks/useFollowers';
 import useUser from '@/hooks/useUser'
+import useCurrentUser from '@/hooks/useCurrentUser';
 
 import { ClipLoader } from 'react-spinners';
 
@@ -14,6 +15,7 @@ const Followers = () => {
     const { userId } = router.query
     const { data: followers = [], isLoading } = useFollowers(userId as string)
     const { data: fetchedUser } = useUser(userId as string)
+    const { data: currentUser } = useCurrentUser()
 
     if (isLoading) {
         return (
@@ -23,15 +25,25 @@ const Followers = () => {
         )
     }
 
-    if (!followers || followers.length === 0) {
-        return <div>No followers found</div> // set the CSS
+    const filteredFollowers = userId === currentUser?.id ?
+    followers.filter(user => user.id !== currentUser?.id) :
+    followers
+
+    if (!filteredFollowers || filteredFollowers.length === 0) {
+        return (
+            <div className="flex flex-col items-center justify-center h-60">
+                <span className="text-neutral-500 text-lg font-medium">
+                    No followers found
+                </span>
+            </div>
+        )
     }
 
     return (
         <>
             <Header showBackArrow label={fetchedUser?.name} />
             <div className="flex flex-col m-4 gap-y-4">
-            {followers.map((follower) => (
+            {filteredFollowers.map((follower) => (
                 <FollowListItem key={follower.id} user={follower} />
             ))}
             </div>

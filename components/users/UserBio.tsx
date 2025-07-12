@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Button from "../Button";
 
 import useCurrentUser from "@/hooks/useCurrentUser";
@@ -32,6 +33,41 @@ const UserBio: React.FC<UserBioProps> = ({ userId }) => {
         return format(new Date(fetchedUser.createdAt), 'MMMM yyyy');
     }, [fetchedUser?.createdAt]);
 
+    const followersCount = useMemo(() => {
+        if (!fetchedUser?.followersCount) return 0
+
+        if (
+                Array.isArray(
+                fetchedUser?.followersIds) && 
+                currentUser?.id &&
+                fetchedUser.followersIds.includes(currentUser.id)
+            ) {
+                return Math.max(0, fetchedUser.followersIds.length - 1);
+            }
+
+        if (Array.isArray(fetchedUser?.followersIds)) {
+            return fetchedUser.followersIds.length
+        }
+        return fetchedUser.followersCount
+    }, [fetchedUser?.followersCount, fetchedUser?.followersIds, currentUser?.id])
+    console.log(followersCount)
+
+    const followingCount = useMemo(() => {
+        if (!fetchedUser?.followingCount) return 0
+
+        if (Array.isArray(fetchedUser?.followingIds) &&
+            currentUser?.id && 
+            fetchedUser.followingIds.includes(currentUser.id)
+        ) {
+            return Math.max(0, fetchedUser.followingIds.length - 1);
+        }
+
+        if (Array.isArray(fetchedUser?.followingIds)) {
+            return fetchedUser.followingIds.length
+        }
+        return fetchedUser.followingCount
+    }, [fetchedUser?.followingCount, fetchedUser?.followingIds, currentUser?.id])
+
     return (
         <div className="border-b-[1px] border-neutral-800 p-4">
             <div className="flex justify-end p-2">
@@ -64,9 +100,12 @@ const UserBio: React.FC<UserBioProps> = ({ userId }) => {
                         <p>Joined {createdAt}</p>
                     </div>
                     <div className="flex flex-row items-center gap-6 mt-4">
-                        <div className="flex flex-row items-center gap-1">
+                        <div 
+                            onClick={() => router.push(`/users/${userId}/following`)}
+                            className="flex flex-row items-center gap-1 cursor-pointer"
+                        >
                             <p className="text-white"> 
-                                {fetchedUser?.followingIds?.length}
+                                {followingCount}
                             </p>
                             <p className="text-neutral-500">Following</p>
                         </div>
@@ -75,7 +114,7 @@ const UserBio: React.FC<UserBioProps> = ({ userId }) => {
                             className="flex flex-row items-center gap-1 cursor-pointer"
                         >
                             <p className="text-white">
-                                {fetchedUser?.followersCount || 0}
+                                {followersCount}
                             </p>
                             <p className="text-neutral-500">Followers</p>
                         </div>

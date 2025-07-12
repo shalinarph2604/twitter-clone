@@ -20,6 +20,10 @@ export default async function handler(
             throw new Error('Invalid ID');
         }
 
+        if (userId === currentUser.id) {
+            return res.status(400).json({ message: 'Cannot follow yourself' });
+        }
+
         const user = await prisma.user.findUnique({
             where: {
                 id: userId
@@ -58,8 +62,11 @@ export default async function handler(
 
         const updatedUser = await prisma.user.update({
             where: { id: currentUser.id },
-            data: { followingIds: updatedFollowingIds }
+            data: { followingIds: 
+                { set: updatedFollowingIds.filter(id => id !== currentUser.id) }
+             }
         });
+
         return res.status(200).json(updatedUser);
     } catch (error) {
         console.log(error)

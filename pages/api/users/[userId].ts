@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next"
 import prisma from "@/libs/prismadb";
 
-export default async function hanlder(
+export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
@@ -16,21 +16,21 @@ export default async function hanlder(
             throw new Error('Invalid ID');
         }
 
-    const existingUser = await prisma.user.findUnique({
-        where: {
-            id: userId
-        }
-    });
+        const existingUser = await prisma.user.findUnique({
+            where: { id: userId }
+        });
 
-    const followersCount = await prisma.user.count({
-        where: {
-            followingIds: {
-                has: userId
+        const followersCount = await prisma.user.count({
+            where: {
+                followingIds: {
+                    has: userId
+                }
             }
-        }
-    })
+        })
 
-    return res.status(200).json({ ...existingUser, followersCount })
+        const followingCount = existingUser?.followingIds?.length ?? 0
+
+        return res.status(200).json({ ...existingUser, followersCount, followingCount })
 
     } catch (error) {
         console.log(error);

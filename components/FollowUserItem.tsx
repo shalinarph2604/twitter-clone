@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import Avatar from "./Avatar"
 import Button from "./Button"
 
@@ -26,13 +25,15 @@ const FollowUserItem: React.FC<FollowUserItemProps> = ({ user }) => {
     }
 
     return (
-        <div className="flex flex-row gap-4">
-            <Avatar userId={user.id} />
-            <div className="flex flex-col">
-                <p className="text-white font-semibold text-sm">
+        <div className="flex flex-row items-center gap-4">
+            <div className="flex-shrink-0">
+                <Avatar userId={user.id} />
+            </div>
+            <div className="flex flex-col min-w-0">
+                <p className="text-white font-semibold text-sm truncate max-w-[120px]">
                     {user.name}
                 </p>
-                <p className="text-neutral-400 text-sm">
+                <p className="text-neutral-400 text-sm truncate max-w-[120px]">
                     @{user.username}
                 </p>
             </div>

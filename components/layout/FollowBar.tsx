@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import useUsers from "@/hooks/useUsers";
 import { Users } from "@/hooks/useUsers";
 import useCurrentUser from "@/hooks/useCurrentUser";
